@@ -36,7 +36,6 @@
     let speed = 5;
     let groundX = 0;
 
-    // Player
     const player = {
       x: 50,
       y: 250,
@@ -47,10 +46,9 @@
       grounded: true
     };
 
-    // Obstacles
     const obstacleEmojis = ["🌵", "🚧", "🪵"];
 
-    // Input
+    // Controls
     document.addEventListener("keydown", e => {
       if (!gameStarted && e.code === "Enter") {
         startCountdown();
@@ -72,18 +70,11 @@
       }
     });
 
-    // Spawn obstacle
     function spawnObstacle() {
       const emoji = obstacleEmojis[Math.floor(Math.random() * obstacleEmojis.length)];
-      obstacles.push({
-        x: canvas.width,
-        y: 250,
-        size: 40,
-        emoji: emoji
-      });
+      obstacles.push({ x: canvas.width, y: 250, size: 40, emoji });
     }
 
-    // Start countdown
     function startCountdown() {
       countdownActive = true;
       countdownValue = 3;
@@ -106,19 +97,17 @@
       }, 1000);
     }
 
-    // Start game
     function startGame() {
       gameStarted = true;
       loop();
     }
 
-    // Game loop
     function loop() {
       if (gameOver || paused || countdownActive) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Scroll ground
+      // Ground
       groundX -= speed;
       if (groundX <= -40) groundX = 0;
       ctx.fillStyle = "#654321";
@@ -126,7 +115,7 @@
         ctx.fillRect(i, 290, 40, 10);
       }
 
-      // Player physics
+      // Player
       player.y += player.dy;
       player.dy += player.gravity;
       if (player.y + player.size >= 290) {
@@ -134,8 +123,6 @@
         player.dy = 0;
         player.grounded = true;
       }
-
-      // Draw player
       ctx.font = player.size + "px Arial";
       ctx.fillText("🏃‍♂️", player.x, player.y + player.size);
 
@@ -146,7 +133,7 @@
         ctx.font = obs.size + "px Arial";
         ctx.fillText(obs.emoji, obs.x, obs.y + obs.size);
 
-        // Collision check
+        // Collision
         if (
           player.x < obs.x + obs.size &&
           player.x + player.size > obs.x &&
@@ -168,7 +155,6 @@
       ctx.fillText("Score: " + score, 10, 25);
       ctx.fillText("High Score: " + highScore, 10, 50);
 
-      // Game over
       if (gameOver) {
         if (score > highScore) {
           highScore = score;
@@ -185,7 +171,6 @@
       requestAnimationFrame(loop);
     }
 
-    // Draw countdown
     function drawCountdown() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "black";
@@ -197,7 +182,6 @@
       }
     }
 
-    // Pause screen
     function showPauseScreen() {
       ctx.fillStyle = "rgba(0,0,0,0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -206,7 +190,6 @@
       ctx.fillText("PAUSED", 330, 150);
     }
 
-    // Start menu
     function showStartMenu() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "black";
