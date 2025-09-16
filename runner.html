@@ -36,13 +36,6 @@
     let speed = 5;
     let groundX = 0;
 
-    // Sounds
-    const jumpSound = new Audio("https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg");
-    const gameOverSound = new Audio("https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg");
-    const bgMusic = new Audio("https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Komiku/Chill_Out/Komiku_-_04_-_Friends.ogg");
-    bgMusic.loop = true;
-    bgMusic.volume = 0.3;
-
     // Player
     const player = {
       x: 50,
@@ -65,14 +58,11 @@
         if (e.code === "Space" && player.grounded && !paused && !countdownActive) {
           player.dy = player.jumpPower;
           player.grounded = false;
-          jumpSound.play();
         } else if (e.code === "KeyP" && !countdownActive) {
           paused = !paused;
           if (paused) {
-            bgMusic.pause();
             showPauseScreen();
           } else {
-            bgMusic.play();
             loop();
           }
         }
@@ -119,8 +109,6 @@
     // Start game
     function startGame() {
       gameStarted = true;
-      bgMusic.currentTime = 0;
-      bgMusic.play();
       loop();
     }
 
@@ -166,8 +154,6 @@
           player.y + player.size > obs.y
         ) {
           gameOver = true;
-          bgMusic.pause();
-          gameOverSound.play();
         }
 
         if (obs.x + obs.size < 0) obstacles.splice(index, 1);
